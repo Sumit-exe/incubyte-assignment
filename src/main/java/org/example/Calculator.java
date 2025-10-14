@@ -6,49 +6,58 @@ import java.util.regex.Pattern;
 
 public class Calculator {
 
-    private Calculator(){}
+    private Calculator() {}
 
-    public static int add(String value) {
-        if (value.isEmpty()) return 0;
-        String delimiter = getDelimiter(value);
-        String numbers = getNumStartIndex(value);
-        String[] nums = numbers.split(delimiter);
-        return sumNums(nums);
+    public static int add(String input) {
+        if (input.isEmpty()) return 0;
+
+        String delimiterRegex = extractDelimiters(input);
+        String numbersPart = stripDelimiterLine(input);
+        String[] numbers = numbersPart.split(delimiterRegex);
+
+        return calculateSum(numbers);
     }
 
-    private static String getDelimiter(String value) {
-        String defaultDelimiter = "[,\n]";
-        if (!value.startsWith("//")) return defaultDelimiter;
+    private static String extractDelimiters(String input) {
+        String defaultDelimiters = "[,\n]";
+        if (!input.startsWith("//")) return defaultDelimiters;
 
-        int end = value.indexOf("\n");
-        String delimiterPart = value.substring(2, end);
+        int newlineIndex = input.indexOf("\n");
+        String delimiterPart = input.substring(2, newlineIndex);
 
-        String custom;
-        if (delimiterPart.startsWith("[") && delimiterPart.endsWith("]")) {
-            custom = delimiterPart.substring(1, delimiterPart.length() - 1);
-        } else {
-            custom = delimiterPart;
+        List<String> delimiters = new ArrayList<>();
+
+        while (delimiterPart.contains("[")) {
+            int start = delimiterPart.indexOf("[") + 1;
+            int end = delimiterPart.indexOf("]");
+            String delim = delimiterPart.substring(start, end);
+            delimiters.add(Pattern.quote(delim));
+            delimiterPart = delimiterPart.substring(end + 1);
         }
-        custom = Pattern.quote(custom);
-        return defaultDelimiter + "|" + custom;
+
+        if (delimiters.isEmpty()) {
+            delimiters.add(Pattern.quote(delimiterPart));
+        }
+
+        return defaultDelimiters + "|" + String.join("|", delimiters);
     }
 
-    private static String getNumStartIndex(String value) {
-        if (!value.startsWith("//")) return value;
-        int end = value.indexOf("\n");
-        return value.substring(end + 1);
+    private static String stripDelimiterLine(String input) {
+        if (!input.startsWith("//")) return input;
+        int newlineIndex = input.indexOf("\n");
+        return input.substring(newlineIndex + 1);
     }
 
-    private static int sumNums(String[] nums) {
+    private static int calculateSum(String[] numbers) {
         int sum = 0;
         List<Integer> negatives = new ArrayList<>();
 
-        for (String num : nums) {
-            if (!num.isEmpty()) {
-                int n = Integer.parseInt(num);
-                if (n < 0) negatives.add(n);
-                if (n < 1000) sum += n;
-            }
+        for (String num : numbers) {
+            if (num.isEmpty()) continue;
+
+            int n = Integer.parseInt(num.trim());
+            if (n < 0) negatives.add(n);
+            if (n < 1000) sum += n;
         }
 
         if (!negatives.isEmpty()) {

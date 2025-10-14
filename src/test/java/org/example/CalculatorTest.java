@@ -65,4 +65,15 @@ class CalculatorTest {
     void addWithMultiCharDelimiter() {
         assertEquals(6, Calculator.add("//[***]\n1***2***3"));
     }
+
+    @Test
+    void addWithMultipleDelimiters() {
+        assertEquals(6, Calculator.add("//[*][%]\n1*2%3"));
+    }
+
+    @Test
+    void addWithMultipleMultiCharDelimiters() {
+        assertEquals(10, Calculator.add("//[***][%%]\n1***2%%3***4"));
+    }
 }
+
