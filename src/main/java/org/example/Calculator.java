@@ -29,7 +29,6 @@ public class Calculator {
         } else {
             custom = delimiterPart;
         }
-
         custom = Pattern.quote(custom);
         return defaultDelimiter + "|" + custom;
     }
