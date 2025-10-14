@@ -7,10 +7,13 @@ public class Calculator {
     }
 
     public static int add(String value){
-        if(value.isEmpty()) return 0;
-        if(value.length() == 1) return Integer.parseInt(value);
+        int sum = 0;
+        if(value.isEmpty()) return sum;
         String[] nums = value.split(",");
-        return Integer.parseInt(nums[0]) + Integer.parseInt(nums[1]);
+        for(String num : nums){
+            sum +=Integer.parseInt(num);
+        }
+        return sum;
     }
 
 }
