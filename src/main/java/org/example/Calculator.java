@@ -1,40 +1,51 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Calculator {
 
-    private Calculator(){
-
-    }
+    private Calculator(){}
 
     public static int add(String value) {
+        if (value.isEmpty()) return 0;
+        String delimiter = getDelimiter(value);
+        String numbers = getNumStartIndex(value);
+        String[] nums = numbers.split(delimiter);
+        return sumNums(nums);
+    }
+
+    private static String getDelimiter(String value) {
+        String defaultDelimiter = "[,\n]";
+        if (!value.startsWith("//")) return defaultDelimiter;
+        int end = value.indexOf("\n");
+        String custom = Pattern.quote(value.substring(2, end));
+        return defaultDelimiter + "|" + custom;
+    }
+
+    private static String getNumStartIndex(String value) {
+        if (!value.startsWith("//")) return value;
+        int end = value.indexOf("\n");
+        return value.substring(end + 1);
+    }
+
+    private static int sumNums(String[] nums) {
         int sum = 0;
-        if (value.isEmpty()) return sum;
+        List<Integer> negatives = new ArrayList<>();
 
-        String delimiter = "[,\n]";
-
-        if (value.startsWith("//")) {
-
-            int delimiterEndIndex = value.indexOf("\n");
-            String customDelimiter = value.substring(2, delimiterEndIndex);
-            customDelimiter = Pattern.quote(customDelimiter);
-
-            delimiter = delimiter + "|" + customDelimiter;
-
-            value = value.substring(delimiterEndIndex + 1);
+        for (String num : nums) {
+            if (!num.isEmpty()) {
+                int n = Integer.parseInt(num);
+                if (n < 0) negatives.add(n);
+                sum += n;
+            }
         }
 
-        String[] nums = value.split(delimiter);
-        for (String num : nums) {
-            num = num.trim();
-            if (!num.isEmpty()) {
-                sum += Integer.parseInt(num);
-            }
+        if (!negatives.isEmpty()) {
+            throw new IllegalArgumentException("negatives not allowed: " + negatives);
         }
 
         return sum;
     }
-
-
 }

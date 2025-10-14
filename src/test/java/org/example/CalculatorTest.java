@@ -3,6 +3,7 @@ package org.example;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CalculatorTest {
 
@@ -35,6 +36,24 @@ class CalculatorTest {
     @Test
     void addShouldReturnSumOfAllNumbersWithCustomDelimiter(){
         assertEquals(6 ,  Calculator.add("//;\n1;2;3"));
+    }
+
+    @Test
+    void addShouldThrowExceptionForSingleNegative() {
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> Calculator.add("1,-2,3")
+        );
+        assertEquals("negatives not allowed: [-2]", exception.getMessage());
+    }
+
+    @Test
+    void addShouldThrowExceptionForMultipleNegatives() {
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> Calculator.add("-1,2,-5")
+        );
+        assertEquals("negatives not allowed: [-1, -5]", exception.getMessage());
     }
 
 }
