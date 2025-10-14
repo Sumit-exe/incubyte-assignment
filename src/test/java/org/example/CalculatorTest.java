@@ -56,4 +56,9 @@ class CalculatorTest {
         assertEquals("negatives not allowed: [-1, -5]", exception.getMessage());
     }
 
+    @Test
+    void addShouldReturnSumOfNumberAndSkipNumbersLargerThenThousand() {
+        assertEquals(2 ,  Calculator.add("2,1000"));
+    }
+
 }
