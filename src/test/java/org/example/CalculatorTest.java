@@ -61,4 +61,8 @@ class CalculatorTest {
         assertEquals(2 ,  Calculator.add("2,1000"));
     }
 
+    @Test
+    void addWithMultiCharDelimiter() {
+        assertEquals(6, Calculator.add("//[***]\n1***2***3"));
+    }
 }

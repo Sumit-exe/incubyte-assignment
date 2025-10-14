@@ -19,8 +19,18 @@ public class Calculator {
     private static String getDelimiter(String value) {
         String defaultDelimiter = "[,\n]";
         if (!value.startsWith("//")) return defaultDelimiter;
+
         int end = value.indexOf("\n");
-        String custom = Pattern.quote(value.substring(2, end));
+        String delimiterPart = value.substring(2, end);
+
+        String custom;
+        if (delimiterPart.startsWith("[") && delimiterPart.endsWith("]")) {
+            custom = delimiterPart.substring(1, delimiterPart.length() - 1);
+        } else {
+            custom = delimiterPart;
+        }
+
+        custom = Pattern.quote(custom);
         return defaultDelimiter + "|" + custom;
     }
 
@@ -38,9 +48,7 @@ public class Calculator {
             if (!num.isEmpty()) {
                 int n = Integer.parseInt(num);
                 if (n < 0) negatives.add(n);
-                if(n < 1000){
-                    sum += n;
-                }
+                if (n < 1000) sum += n;
             }
         }
 
