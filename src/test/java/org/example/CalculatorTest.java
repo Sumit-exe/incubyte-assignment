@@ -1,6 +1,5 @@
 package org.example;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,6 +24,12 @@ class CalculatorTest {
     @Test
     void addShouldReturnSumOfAllNumbers(){
         assertEquals(6 ,  Calculator.add("1,2,3"));
+    }
+
+
+    @Test
+    void addShouldReturnSumOfAllNumbersAndHandleNewLine(){
+        assertEquals(6 ,  Calculator.add("1\n2,3"));
     }
 
 }
