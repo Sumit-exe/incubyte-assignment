@@ -15,6 +15,7 @@ public class Calculator {
         String numbersPart = stripDelimiterLine(input);
         String[] numbers = numbersPart.split(delimiterRegex);
 
+        if(delimiterRegex.contains("*")) return calculateproduct(numbers);
         return calculateSum(numbers);
     }
 
@@ -48,6 +49,28 @@ public class Calculator {
         return input.substring(newlineIndex + 1);
     }
 
+    private static int calculateproduct(String[] numbers){
+        int product =1;
+        List<Integer> negatives = new ArrayList<>();
+
+        for (String num : numbers) {
+            System.out.println(num);
+            if (num.isEmpty()) continue;
+
+            int n = Integer.parseInt(num.trim());
+            if (n < 0) negatives.add(n);
+            if (n < 1000){
+                product *= n;
+
+            }
+        }
+
+        if (!negatives.isEmpty()) {
+            throw new IllegalArgumentException("negatives not allowed: " + negatives);
+        }
+
+        return product;
+    }
     private static int calculateSum(String[] numbers) {
         int sum = 0;
         List<Integer> negatives = new ArrayList<>();
@@ -57,7 +80,9 @@ public class Calculator {
 
             int n = Integer.parseInt(num.trim());
             if (n < 0) negatives.add(n);
-            if (n < 1000) sum += n;
+            if (n < 1000){
+                sum += n;
+            }
         }
 
         if (!negatives.isEmpty()) {

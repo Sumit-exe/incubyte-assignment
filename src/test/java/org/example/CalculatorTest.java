@@ -35,7 +35,7 @@ class CalculatorTest {
 
     @Test
     void addShouldReturnSumOfAllNumbersWithCustomDelimiter(){
-        assertEquals(6 ,  Calculator.add("//;\n1;2;3"));
+        assertEquals(24 ,  Calculator.add("//*\n1*2*3*4")); //1*2*3*4 = 24
     }
 
     @Test
@@ -73,7 +73,7 @@ class CalculatorTest {
 
     @Test
     void addWithMultipleMultiCharDelimiters() {
-        assertEquals(10, Calculator.add("//[***][%%]\n1***2%%3***4"));
+        assertEquals(10, Calculator.add("//[&&&][%%]\n1&&&2%%3&&&4"));
     }
 }
 
